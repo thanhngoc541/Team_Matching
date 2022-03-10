@@ -10,6 +10,8 @@ import 'screens/categories_screen.dart';
 import 'screens/category_meals_screen.dart';
 import 'screens/tabs_screen.dart';
 
+import 'screens/login_screen.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -89,8 +91,9 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 20, fontFamily: 'RobotoCondensed', fontWeight: FontWeight.bold),
             ),
       ),
-      initialRoute: TabsScreen.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
         TabsScreen.routeName: (ctx) => TabsScreen(favoriteMeals: _favoriteMeals),
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(avalibleMeals: _meals),
         MealDetailScreen.routeName: (ctx) =>
