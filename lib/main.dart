@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/models/filter.dart';
 import 'package:team_matching/screens/project_detail_screen.dart';
 import 'dummy_data.dart';
 import 'models/meal.dart';
@@ -23,6 +24,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   List<Meal> _meals = DUMMY_MEALS;
   final List<Meal> _favoriteMeals = [];
+  FilterObject _filterObject = FilterObject(
+    status: "",
+    filter: Filter(""),
+  );
   Map<String, bool> _filters = {
     'gluten': false,
     'lactose': false,
@@ -52,6 +57,12 @@ class _MyAppState extends State<MyApp> {
         if (_filters['vegan']! && !element.isVegan) return false;
         return true;
       }).toList();
+    });
+  }
+
+  void _setFilters2(FilterObject filterData) {
+    setState(() {
+      _filterObject = filterData;
     });
   }
 
@@ -85,7 +96,12 @@ class _MyAppState extends State<MyApp> {
         MealDetailScreen.routeName: (ctx) =>
             MealDetailScreen(isMealFavorite: _isMealFavorite, toggleFavorite: _toggleFavorite),
         ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(filters: _filters, saveFilters: _setFilters)
+        FiltersScreen.routeName: (ctx) => FiltersScreen(
+              filters: _filters,
+              saveFilters: _setFilters,
+              saveFilters2: _setFilters2,
+              filterObject: _filterObject, 
+            )
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (context) => const CategoriesScreen());

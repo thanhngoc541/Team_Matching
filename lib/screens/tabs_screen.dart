@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:team_matching/screens/projects_screen.dart';
+import 'package:team_matching/screens/recommended_projects_screen.dart';
 import 'package:team_matching/widgets/main_drawer.dart';
 import '../models/meal.dart';
 import '../screens/categories_screen.dart';
@@ -21,9 +22,10 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   void initState() {
     _pages = [
-      {'page': const CategoriesScreen(), 'title': 'Categories'},
+      // {'page': const CategoriesScreen(), 'title': 'Categories'},
       {'page': const ProjectsScreen(), 'title': 'Projects'},
-      {'page': FavoritiesScreen(favoriteMeals: widget.favoriteMeals), 'title': 'Your favorite'},
+      {'page': const RecommendedProjectsScreen(), 'title': 'Recommended'},
+      // {'page': FavoritiesScreen(favoriteMeals: widget.favoriteMeals), 'title': 'Your favorite'},
     ];
     super.initState();
   }
@@ -49,9 +51,10 @@ class _TabsScreenState extends State<TabsScreen> {
         selectedItemColor: Theme.of(context).colorScheme.secondary,
         currentIndex: _selectedTabIndex,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
+          // BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
           BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Projects'),
-          BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorites'),
+          BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Recommended'),
+          // BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorites'),
         ],
       ),
     );
