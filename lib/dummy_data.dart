@@ -1,8 +1,97 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/models/project.dart';
+import 'package:team_matching/models/project_summary.dart';
+import 'package:team_matching/models/university.dart';
+import 'package:team_matching/models/user.dart';
 
 import './models/category.dart';
 import './models/meal.dart';
 
+// ignore: constant_identifier_names
+const DUMMY_PROJECTS = [
+  ProjectSummary(
+    project: Project(
+        id: 65,
+        title: 'Chung cư mặt đất',
+        description:
+            "Nhận thấy tình trạng xuống cấp của các phòng trọ cho sinh viên và công nhân tại khu vực Bình Dương, Khu đô thị ĐHQG đang ngày càng có tình trạng xuống cấp không đảm bảo môi trường sống cho sinh viên. Song song đó, có nhiều xóm trọ được xây mới mọc lên với giá thành cao so với chi phí sinh hoạt của sinh viên. Vậy nên dự án sẽ dựa trên những phòng trọ cũ để cải tạo trang trí thành một không gian mới, đầy đủ tiện nghi nhưng với giá thành phải chăng để vừa nâng cao đời sống cho sinh viên và công nhân nhưng cũng vô cùng tiết kiệm.",
+        imageUrl:
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQnmR6RHQYAPCKnF2LCkjZ1nx_2YP0TuVg9sw&usqp=CAU",
+        application:
+            "Đây là một sự án sơ khai của mình và vẫn đang còn rất nhiều điểm bất cập. Mình mong muốn sẽ gặp được những người bạn đồng hành để hoàn thiện hơn dự án hoặc xây dựng một dự án mới. Thứ mà mình quan trọng nhất vẫn là một tập thể đoàn kết. Xin cảm ơn tất cả mọi người đã quan tâm ạ.",
+        competitionId: null,
+        field: "Dich vu",
+        contactLink: "https://www.facebook.com/trantien2k1/",
+        projectSkills: [
+          "Thiết kế",
+          "Thuyết trình",
+          "Content",
+          "Research Skills",
+          "Problem Solving",
+          "Communication Skills"
+        ],
+        status: -1),
+    user: User(
+      id: 197,
+      fullName: "Trần Văn Tiến",
+      university: University(id: 40, name: "TRƯỜNG ĐẠI HỌC KINH TẾ - LUẬT"),
+    ),
+  ),
+  ProjectSummary(
+    project: Project(
+        id: 66,
+        title: 'Chung cư mặt đất',
+        description:
+            "Nhận thấy tình trạng xuống cấp của các phòng trọ cho sinh viên và công nhân tại khu vực Bình Dương, Khu đô thị ĐHQG đang ngày càng có tình trạng xuống cấp không đảm bảo môi trường sống cho sinh viên. Song song đó, có nhiều xóm trọ được xây mới mọc lên với giá thành cao so với chi phí sinh hoạt của sinh viên. Vậy nên dự án sẽ dựa trên những phòng trọ cũ để cải tạo trang trí thành một không gian mới, đầy đủ tiện nghi nhưng với giá thành phải chăng để vừa nâng cao đời sống cho sinh viên và công nhân nhưng cũng vô cùng tiết kiệm.",
+        imageUrl: "https://i.imgur.com/fv7lgfz.png",
+        application:
+            "Đây là một sự án sơ khai của mình và vẫn đang còn rất nhiều điểm bất cập. Mình mong muốn sẽ gặp được những người bạn đồng hành để hoàn thiện hơn dự án hoặc xây dựng một dự án mới. Thứ mà mình quan trọng nhất vẫn là một tập thể đoàn kết. Xin cảm ơn tất cả mọi người đã quan tâm ạ.",
+        competitionId: null,
+        field: "Dich vu",
+        contactLink: "https://www.facebook.com/trantien2k1/",
+        projectSkills: [
+          "Thiết kế",
+          "Thuyết trình",
+          "Content",
+          "Research Skills",
+          "Problem Solving",
+          "Communication Skills"
+        ],
+        status: -1),
+    user: User(
+      id: 198,
+      fullName: "Trần Văn Tiến",
+      university: University(id: 40, name: "TRƯỜNG ĐẠI HỌC KINH TẾ - LUẬT"),
+    ),
+  ),
+  ProjectSummary(
+    project: Project(
+        id: 2,
+        title: 'Chung cư mặt đất',
+        description:
+            "Nhận thấy tình trạng xuống cấp của các phòng trọ cho sinh viên và công nhân tại khu vực Bình Dương, Khu đô thị ĐHQG đang ngày càng có tình trạng xuống cấp không đảm bảo môi trường sống cho sinh viên. Song song đó, có nhiều xóm trọ được xây mới mọc lên với giá thành cao so với chi phí sinh hoạt của sinh viên. Vậy nên dự án sẽ dựa trên những phòng trọ cũ để cải tạo trang trí thành một không gian mới, đầy đủ tiện nghi nhưng với giá thành phải chăng để vừa nâng cao đời sống cho sinh viên và công nhân nhưng cũng vô cùng tiết kiệm.",
+        imageUrl: "https://i.imgur.com/fv7lgfz.png",
+        application:
+            "Đây là một sự án sơ khai của mình và vẫn đang còn rất nhiều điểm bất cập. Mình mong muốn sẽ gặp được những người bạn đồng hành để hoàn thiện hơn dự án hoặc xây dựng một dự án mới. Thứ mà mình quan trọng nhất vẫn là một tập thể đoàn kết. Xin cảm ơn tất cả mọi người đã quan tâm ạ.",
+        competitionId: null,
+        field: "Dich vu",
+        contactLink: "https://www.facebook.com/trantien2k1/",
+        projectSkills: [
+          "Thiết kế",
+          "Thuyết trình",
+          "Content",
+          "Research Skills",
+          "Problem Solving",
+          "Communication Skills"
+        ],
+        status: -1),
+    user: User(
+      id: 13,
+      fullName: "Trần Văn Tiến",
+      university: University(id: 40, name: "TRƯỜNG ĐẠI HỌC KINH TẾ - LUẬT"),
+    ),
+  ),
+];
 // ignore: constant_identifier_names
 const DUMMY_CATEGORIES = [
   Category(

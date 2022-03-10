@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/screens/projects_screen.dart';
 import 'package:team_matching/widgets/main_drawer.dart';
 import '../models/meal.dart';
 import '../screens/categories_screen.dart';
@@ -21,6 +22,7 @@ class _TabsScreenState extends State<TabsScreen> {
   void initState() {
     _pages = [
       {'page': const CategoriesScreen(), 'title': 'Categories'},
+      {'page': const ProjectsScreen(), 'title': 'Projects'},
       {'page': FavoritiesScreen(favoriteMeals: widget.favoriteMeals), 'title': 'Your favorite'},
     ];
     super.initState();
@@ -48,6 +50,7 @@ class _TabsScreenState extends State<TabsScreen> {
         currentIndex: _selectedTabIndex,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Categories'),
+          BottomNavigationBarItem(icon: Icon(Icons.category), label: 'Projects'),
           BottomNavigationBarItem(icon: Icon(Icons.star), label: 'Favorites'),
         ],
       ),

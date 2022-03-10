@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/screens/project_detail_screen.dart';
 import 'dummy_data.dart';
 import 'models/meal.dart';
 import 'screens/filters_screen.dart';
@@ -83,6 +84,7 @@ class _MyAppState extends State<MyApp> {
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(avalibleMeals: _meals),
         MealDetailScreen.routeName: (ctx) =>
             MealDetailScreen(isMealFavorite: _isMealFavorite, toggleFavorite: _toggleFavorite),
+        ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
         FiltersScreen.routeName: (ctx) => FiltersScreen(filters: _filters, saveFilters: _setFilters)
       },
       onUnknownRoute: (settings) {
