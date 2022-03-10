@@ -1,82 +1,143 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-import '../widgets/main_drawer.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:team_matching/screens/tabs_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
-
   const LoginScreen({Key? key}) : super(key: key);
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+
+  bool _isLoading = false;
+
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text("Login Page"),
-      ),
-      body: Column(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: [Colors.blue, Colors.teal],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter),
+        ),
+        child: _isLoading ? Center(child: CircularProgressIndicator()) : ListView(
           children: <Widget>[
-            Container(
-              width: 200,
-              height: 200,
-              margin: const EdgeInsets.symmetric(vertical: 20.0),
-              decoration: BoxDecoration(
-                color: Colors.amber,
-                border: Border.all(width: 1, color: Colors.black26),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              padding: const EdgeInsets.all(50),
-              child: const FlutterLogo(
-                size: 50,
-              ),
-            ),
-            const Padding(
-              //padding: const EdgeInsets.only(left:15.0,right: 15.0,top:0,bottom: 0),
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                    hintText: 'Enter valid email id as abc@gmail.com'),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.only(
-                  left: 15.0, right: 15.0, top: 15, bottom: 0),
-              //padding: EdgeInsets.symmetric(horizontal: 15),
-              child: TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Password',
-                    hintText: 'Enter secure password'),
-              ),
-            ),
-            Container(
-              height: 50,
-              width: 250,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
-              margin: const EdgeInsets.symmetric(vertical: 20.0),
-              // child: FlatButton(
-              //   onPressed: () {
-              //     Navigator.push(
-              //         context, MaterialPageRoute(builder: (_) => HomePage()));
-              //   },
-              child: const Text(
-                'Login',
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
-            ),
+            headerSection(),
+            textSection(),
+            buttonSection(),
           ],
-        )
+        ),
+      ),
+    );
+  }
+
+  signIn(String email, pass) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    Map data = {
+      'email': email,
+      'password': pass
+    };
+    var jsonResponse = null;
+    var response = await http.post("https://startup-competition-api.azurewebsites.net/api/v1/authentication",
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(data));
+    print(response);
+    if(response.statusCode == 200) {
+      jsonResponse = response.body;
+      if(jsonResponse != null) {
+        setState(() {
+          _isLoading = false;
+        });
+        sharedPreferences.setString("token", jsonResponse);
+        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const TabsScreen(favoriteMeals: [])), (Route<dynamic> route) => false);
+      }
+    }
+    else {
+      setState(() {
+        _isLoading = false;
+      });
+      print(response.body);
+    }
+  }
+
+  Container buttonSection() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 40.0,
+      padding: EdgeInsets.symmetric(horizontal: 15.0),
+      margin: EdgeInsets.only(top: 15.0),
+      child: RaisedButton(
+        onPressed: emailController.text == "" || passwordController.text == "" ? null : () {
+          setState(() {
+            _isLoading = true;
+          });
+          signIn(emailController.text, passwordController.text);
+        },
+        elevation: 0.0,
+        color: Colors.purple,
+        child: Text("Sign In", style: TextStyle(color: Colors.white70)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+      ),
+    );
+  }
+
+  final TextEditingController emailController = new TextEditingController();
+  final TextEditingController passwordController = new TextEditingController();
+
+  Container textSection() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      child: Column(
+        children: <Widget>[
+          TextFormField(
+            controller: emailController,
+            cursorColor: Colors.white,
+
+            style: TextStyle(color: Colors.white70),
+            decoration: InputDecoration(
+              icon: Icon(Icons.email, color: Colors.white70),
+              hintText: "Email",
+              border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+              hintStyle: TextStyle(color: Colors.white70),
+            ),
+          ),
+          SizedBox(height: 30.0),
+          TextFormField(
+            controller: passwordController,
+            cursorColor: Colors.white,
+            obscureText: true,
+            style: TextStyle(color: Colors.white70),
+            decoration: InputDecoration(
+              icon: Icon(Icons.lock, color: Colors.white70),
+              hintText: "Password",
+              border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
+              hintStyle: TextStyle(color: Colors.white70),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Container headerSection() {
+    return Container(
+      margin: EdgeInsets.only(top: 50.0),
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+      child: Text("Code Land",
+          style: TextStyle(
+              color: Colors.white70,
+              fontSize: 40.0,
+              fontWeight: FontWeight.bold)),
     );
   }
 }
