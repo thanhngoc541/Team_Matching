@@ -121,7 +121,11 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
     }
 
     return _isLoading == true
-        ? const Center(child: Text('Loading...'))
+        ? const Scaffold(
+            body: Center(
+              child: Text('Loading...'),
+            ),
+          )
         : Scaffold(
             appBar: AppBar(
               title: Text(_projectSummary.project!.title!),
