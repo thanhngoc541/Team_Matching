@@ -1,11 +1,13 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/screens/tabs_screen.dart';
+import 'package:team_matching/widgets/blurry_alert.dart';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
@@ -24,13 +26,13 @@ class _LoginScreenState extends State<LoginScreen> {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
               colors: [Colors.blue, Colors.teal],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter),
         ),
-        child: _isLoading ? Center(child: CircularProgressIndicator()) : ListView(
+        child: _isLoading ? const Center(child: CircularProgressIndicator()) : ListView(
           children: <Widget>[
             headerSection(),
             textSection(),
@@ -47,77 +49,90 @@ class _LoginScreenState extends State<LoginScreen> {
       'email': email,
       'password': pass
     };
-    var jsonResponse = null;
-    var response = await http.post("https://startup-competition-api.azurewebsites.net/api/v1/authentication",
+    String jsonResponse;
+    http.Response response = await http.post("https://startup-competition-api.azurewebsites.net/api/v1/authentication",
         headers: {"Content-Type": "application/json"},
         body: json.encode(data));
-    print(response);
+    
     if(response.statusCode == 200) {
       jsonResponse = response.body;
-      if(jsonResponse != null) {
-        setState(() {
-          _isLoading = false;
-        });
-        sharedPreferences.setString("token", jsonResponse);
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const TabsScreen(favoriteMeals: [])), (Route<dynamic> route) => false);
+      if (kDebugMode) {
+        print("token:"+jsonResponse);
       }
+      setState(() {
+        _isLoading = false;
+      });
+      sharedPreferences.setString("token", jsonResponse);
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const TabsScreen(favoriteMeals: [])), (Route<dynamic> route) => false);
     }
     else {
       setState(() {
         _isLoading = false;
       });
-      print(response.body);
+      _showDialog(context);
     }
+
   }
+
+  _showDialog(BuildContext context)
+{
+  BlurryDialog  alert = const BlurryDialog("Login failed!","Please check your email and password again");
+
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return alert;
+    },
+  );
+}
+
+  
 
   Container buttonSection() {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 40.0,
-      padding: EdgeInsets.symmetric(horizontal: 15.0),
-      margin: EdgeInsets.only(top: 15.0),
-      child: RaisedButton(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      margin: const EdgeInsets.only(top: 15.0),
+      child: ElevatedButton(
         onPressed: emailController.text == "" || passwordController.text == "" ? null : () {
           setState(() {
             _isLoading = true;
           });
           signIn(emailController.text, passwordController.text);
         },
-        elevation: 0.0,
-        color: Colors.purple,
-        child: Text("Sign In", style: TextStyle(color: Colors.white70)),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+        child: const Text("Sign In", style: TextStyle(color: Colors.white70)),
       ),
     );
   }
 
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   Container textSection() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 20.0),
       child: Column(
         children: <Widget>[
           TextFormField(
             controller: emailController,
             cursorColor: Colors.white,
 
-            style: TextStyle(color: Colors.white70),
-            decoration: InputDecoration(
+            style: const TextStyle(color: Colors.white70),
+            decoration: const InputDecoration(
               icon: Icon(Icons.email, color: Colors.white70),
               hintText: "Email",
               border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
               hintStyle: TextStyle(color: Colors.white70),
             ),
           ),
-          SizedBox(height: 30.0),
+          const SizedBox(height: 30.0),
           TextFormField(
             controller: passwordController,
             cursorColor: Colors.white,
             obscureText: true,
-            style: TextStyle(color: Colors.white70),
-            decoration: InputDecoration(
+            style: const TextStyle(color: Colors.white70),
+            decoration: const InputDecoration(
               icon: Icon(Icons.lock, color: Colors.white70),
               hintText: "Password",
               border: UnderlineInputBorder(borderSide: BorderSide(color: Colors.white70)),
@@ -131,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   Container headerSection() {
     return Container(
-      margin: EdgeInsets.only(top: 50.0),
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
-      child: Text("Code Land",
+      margin: const EdgeInsets.only(top: 50.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+      child: const Text("Welcome to Team Matching",
           style: TextStyle(
               color: Colors.white70,
               fontSize: 40.0,

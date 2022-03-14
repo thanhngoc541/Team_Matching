@@ -93,7 +93,7 @@ class _MyAppState extends State<MyApp> {
       ),
       initialRoute: LoginScreen.routeName,
       routes: {
-        LoginScreen.routeName: (ctx) => LoginScreen(),
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
         TabsScreen.routeName: (ctx) => TabsScreen(favoriteMeals: _favoriteMeals),
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(avalibleMeals: _meals),
         MealDetailScreen.routeName: (ctx) =>
