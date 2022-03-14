@@ -91,9 +91,9 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 20, fontFamily: 'RobotoCondensed', fontWeight: FontWeight.bold),
             ),
       ),
-      initialRoute: LoginScreen.routeName,
+      initialRoute: TabsScreen.routeName,
       routes: {
-        LoginScreen.routeName: (ctx) => LoginScreen(),
+        LoginScreen.routeName: (ctx) => const LoginScreen(),
         TabsScreen.routeName: (ctx) => TabsScreen(favoriteMeals: _favoriteMeals),
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(avalibleMeals: _meals),
         MealDetailScreen.routeName: (ctx) =>
@@ -103,7 +103,7 @@ class _MyAppState extends State<MyApp> {
               filters: _filters,
               saveFilters: _setFilters,
               saveFilters2: _setFilters2,
-              filterObject: _filterObject, 
+              filterObject: _filterObject,
             )
       },
       onUnknownRoute: (settings) {

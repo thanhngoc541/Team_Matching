@@ -10,7 +10,8 @@ class ProjectItem extends StatelessWidget {
   }) : super(key: key);
 
   void _selectProject(BuildContext ctx) {
-    Navigator.of(ctx).pushNamed(ProjectDetailScreen.routeName, arguments: projectSummary);
+    Navigator.of(ctx)
+        .pushNamed(ProjectDetailScreen.routeName, arguments: projectSummary.project?.id);
   }
 
   String get statusText {
