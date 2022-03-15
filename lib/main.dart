@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:team_matching/models/filter.dart';
+import 'package:team_matching/screens/profile_screen.dart';
 import 'package:team_matching/screens/project_detail_screen.dart';
 import 'screens/filters_screen.dart';
 import 'screens/categories_screen.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> {
       initialRoute: LoginScreen.routeName,
       routes: {
         LoginScreen.routeName: (ctx) => const LoginScreen(),
+        ProfileScreen.routeName: (ctx) => const ProfileScreen(),  
         TabsScreen.routeName: (ctx) => const TabsScreen(),
         ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
         FiltersScreen.routeName: (ctx) => FiltersScreen(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/screens/profile_screen.dart';
 import 'package:team_matching/screens/tabs_screen.dart';
 
 import '../screens/filters_screen.dart';
@@ -25,12 +26,15 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        buildListTile(Icons.restaurant, 'Profile', () {
-          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
+        buildListTile(Icons.restaurant, 'Profile', () {  
+          Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
         }),
         buildListTile(Icons.restaurant, 'Project', () {
-          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
-        })
+          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);  
+        }),
+        buildListTile(Icons.settings, 'Filters', () {
+          Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
+        }),
       ]),
     );
   }
