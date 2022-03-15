@@ -6,15 +6,8 @@ import '../widgets/main_drawer.dart';
 class FiltersScreen extends StatefulWidget {
   static const routeName = '/filters';
   final Function saveFilters;
-  final Function saveFilters2;
-  final Map<String, bool> filters;
   final FilterObject filterObject;
-  const FiltersScreen(
-      {Key? key,
-      required this.saveFilters,
-      required this.filters,
-      required this.filterObject,
-      required this.saveFilters2})
+  const FiltersScreen({Key? key, required this.filterObject, required this.saveFilters})
       : super(key: key);
 
   @override
@@ -22,11 +15,8 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  String dropdownValue = 'One';
-  late bool _gluten = false;
-  late bool _lactose = false;
-  late bool _vegetarian = false;
-  late bool _vegan = false;
+  String fieldValue = 'Tài chính - ngân hàng';
+  int statusIndex = 0;
   late FilterObject _filterObject;
   static const fields = [
     "Tài chính - ngân hàng",
@@ -42,27 +32,23 @@ class _FiltersScreenState extends State<FiltersScreen> {
 
   static const statuses = [
     {
-      "value": "0",
+      "value": 0,
       "color": Colors.green,
       "description": "Đang hoạt động",
     },
     {
-      "value": "1",
+      "value": 1,
       "color": Colors.red,
       "description": "Ngừng hoạt động",
     },
     {
-      "value": "2",
+      "value": 2,
       "color": Colors.black,
       "description": "Ngừng tuyển",
     },
   ];
   @override
   void initState() {
-    _gluten = widget.filters['gluten']!;
-    _lactose = widget.filters['lactose']!;
-    _vegetarian = widget.filters['vegetarian']!;
-    _vegan = widget.filters['vegan']!;
     _filterObject = widget.filterObject;
     super.initState();
   }
@@ -72,94 +58,81 @@ class _FiltersScreenState extends State<FiltersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your filters'),
-        actions: <Widget>[
-          IconButton(
-              onPressed: () => {
-                    widget.saveFilters({
-                      'gluten': _gluten,
-                      'lactose': _lactose,
-                      'vegetarian': _vegetarian,
-                      'vegan': _vegan,
-                    })
-                  },
-              icon: const Icon(Icons.save))
-        ],
+        actions: <Widget>[IconButton(onPressed: () => {}, icon: const Icon(Icons.save))],
       ),
       drawer: const MainDrawer(),
       body: Column(children: <Widget>[
-        Container(
-          padding: const EdgeInsets.all(20),
-          child: Text(
-            'Adjust your meals selection',
-            style: Theme.of(context).textTheme.headline6,
+        const SizedBox(height: 30),
+        Row(children: <Widget>[
+          SizedBox(
+            width: 100,
+            child: Text(
+              'Lĩnh vực',
+              style: Theme.of(context).textTheme.headline6,
+            ),
           ),
-        ),
-        Expanded(
-          child: ListView(children: <Widget>[
-            buildSwitchListTile(
-              'Gluten-free',
-              'Only include gluten-free meals.',
-              _gluten,
-              (value) {
-                setState(() {
-                  _gluten = value;
-                });
+          Expanded(
+            child: DropdownButton<String>(
+              selectedItemBuilder: (BuildContext context) {
+                return fields.map<Widget>((String item) {
+                  return Text(item);
+                }).toList();
               },
-            ),
-            buildSwitchListTile(
-              'Lactose-free',
-              'Only include Lactose-free meals.',
-              _lactose,
-              (value) {
-                setState(() {
-                  _lactose = value;
-                });
-              },
-            ),
-            buildSwitchListTile(
-              'Vegeterian',
-              'Only include Vegeterian meals.',
-              _vegetarian,
-              (value) {
-                setState(() {
-                  _vegetarian = value;
-                });
-              },
-            ),
-            buildSwitchListTile(
-              'Vegan',
-              'Only include Vegan meals.',
-              _vegan,
-              (value) {
-                setState(() {
-                  _vegan = value;
-                });
-              },
-            ),
-            DropdownButton<String>(
-              value: dropdownValue,
+              value: fieldValue,
               icon: const Icon(Icons.arrow_downward),
               elevation: 16,
-              style: const TextStyle(color: Colors.deepPurple),
+              style: TextStyle(color: Theme.of(context).primaryColor),
               underline: Container(
                 height: 2,
-                color: Colors.deepPurpleAccent,
+                color: Theme.of(context).primaryColor,
               ),
               onChanged: (String? newValue) {
                 setState(() {
-                  dropdownValue = newValue!;
+                  fieldValue = newValue!;
                 });
               },
-              items: <String>['One', 'Two', 'Free', 'Four']
-                  .map<DropdownMenuItem<String>>((String value) {
+              items: fields.map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
                   child: Text(value),
                 );
               }).toList(),
             ),
-          ]),
-        )
+          ),
+        ]),
+        const SizedBox(height: 30),
+        Row(children: <Widget>[
+          SizedBox(
+            width: 100,
+            child: Text(
+              'Trạng thái',
+              style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
+          Expanded(
+            child: DropdownButton<int>(
+              value: statusIndex,
+              icon: const Icon(Icons.arrow_downward),
+              elevation: 16,
+              style: TextStyle(color: Theme.of(context).primaryColor),
+              underline: Container(
+                height: 2,
+                color: Theme.of(context).primaryColor,
+              ),
+              onChanged: (int? index) {
+                setState(() {
+                  statusIndex = index!;
+                });
+              },
+              items: statuses.map<DropdownMenuItem<int>>((dynamic value) {
+                return DropdownMenuItem<int>(
+                  value: value['value'] as int,
+                  child: Text(value['description'] as String),
+                );
+              }).toList(),
+            ),
+          ),
+        ]),
       ]),
     );
   }

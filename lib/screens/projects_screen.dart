@@ -1,13 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/university.dart';
 import 'package:team_matching/widgets/project_item.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-import '../dummy_data.dart';
 import '../models/user.dart';
 
 class ProjectsScreen extends StatefulWidget {
@@ -30,7 +30,15 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         }));
   }
 
+  @override
+  void didChangeDependencies() {
+    print("did");
+  }
+
   Future<List<ProjectSummary>> fetchProject() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    print("get project");
+    print(sharedPreferences.getString('searchString'));
     final response = await http.post(
         'https://startup-competition-api.azurewebsites.net/api/v1/projects',
         headers: {'Content-Type': 'application/json', 'accept': 'application/json'},

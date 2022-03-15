@@ -1,9 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/dummy_data.dart';
+import 'package:team_matching/models/comment.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
+import 'package:team_matching/models/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
@@ -19,6 +22,7 @@ class ProjectDetailScreen extends StatefulWidget {
 class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
   late TextEditingController _controller;
   late ProjectSummary _projectSummary = const ProjectSummary();
+  late List<Comment> _comments = [];
   bool _isLoading = true;
   @override
   void didChangeDependencies() {
@@ -29,6 +33,11 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
             setState(() {
               _projectSummary = ProjectSummary(project: value, user: DUMMY_PROJECTS[0].user);
               _isLoading = false;
+            })
+          });
+      fetchProjectComments(projectId).then((value) => {
+            setState(() {
+              _comments = value;
             })
           });
     }
@@ -69,32 +78,78 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
     }
   }
 
-  Future<Project> fetchProjectComments(projectId) async {
+  Future<List<Comment>> fetchProjectComments(projectId) async {
     final response = await http.get(
       'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=1&page-size=100',
     );
+    List<Comment> res = [];
     if (response.statusCode == 200) {
-      dynamic value;
-      Project project = const Project(id: -1);
-      value = jsonDecode(response.body);
-      if (value != null) {
-        project = Project(
-          id: value['project']['id'],
-          application: value['project']['application'],
-          competitionId: value['project']['competitionId'],
-          contactLink: value['project']['contactLink'],
-          description: value['project']['description'],
-          field: value['project']['field'],
-          imageUrl: value['project']['imageUrl'],
-          projectSkills: value['project']['projectSkills'],
-          status: value['project']['status'],
-          title: value['project']['title'],
-        );
+      List<dynamic> values;
+      values = jsonDecode(response.body);
+      if (values.isNotEmpty) {
+        for (int i = 0; i < values.length; i++) {
+          if (values[i] != null) {
+            Comment cmt = Comment(
+                id: values[i]['id'],
+                commentTime: values[i]['commentTime'],
+                content: values[i]['content'],
+                student: User(
+                  id: values[i]['student']['id'],
+                  fullName: values[i]['student']['fullName'],
+                  avatarUrl: values[i]['student']['avatarUrl'],
+                ));
+            res.add(cmt);
+          }
+        }
       }
-      return project;
+      return res;
     } else {
       // If that call was not successful, throw an error.
-      throw Exception('Failed to load project');
+      throw Exception('Failed to load projects');
+    }
+  }
+
+  void doComment(projectId, content) {
+    postComment(projectId, content).then((value) => {
+          if (value != null)
+            setState(() {
+              _comments = [value, ..._comments];
+            })
+        });
+  }
+
+  Future<Comment?> postComment(projectId, content) async {
+    Map data = {
+      'projectId': projectId,
+      'comment': content,
+    };
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString('token');
+    final response = await http.post(
+      'https://startup-competition-api.azurewebsites.net/api/v1/comments',
+      headers: {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'},
+      body: json.encode(data),
+    );
+    Comment? cmt;
+    if (response.statusCode == 201) {
+      dynamic value;
+      value = jsonDecode(response.body);
+      if (value != null) {
+        cmt = Comment(
+          id: value['id'],
+          commentTime: value['commentTime'],
+          content: value['content'],
+          student: User(
+            id: value['student']['id'],
+            fullName: value['student']['fullName'],
+            avatarUrl: value['student']['avatarUrl'],
+          ),
+        );
+      }
+      return cmt;
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to comment project');
     }
   }
 
@@ -204,58 +259,29 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                             ),
                             controller: _controller,
                             onSubmitted: (String value) async {
-                              await showDialog<void>(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Text('Thanks!'),
-                                    content: Text(
-                                        'You typed "$value", which has length ${value.characters.length}.'),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              // await showDialog<void>(
+                              //   context: context,
+                              //   builder: (BuildContext context) {
+                              //     return AlertDialog(
+                              //       title: const Text('Thanks!'),
+                              //       content: Text(
+                              //           'You typed "$value", which has length ${value.characters.length}.'),
+                              //       actions: <Widget>[
+                              //         TextButton(
+                              //           onPressed: () {
+                              //             Navigator.pop(context);
+                              //           },
+                              //           child: const Text('OK'),
+                              //         ),
+                              //       ],
+                              //     );
+                              //   },
+                              // );
+                              doComment(_projectSummary.project?.id, value);
+                              _controller.clear();
                             }),
                       ),
-                      ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          child: avatarBuilder(),
-                        ),
-                        title: Text(
-                          _projectSummary.user!.fullName!,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: const Text("hay"),
-                      ),
-                      ListTile(
-                        leading: CircleAvatar(
-                          radius: 30,
-                          child: avatarBuilder(),
-                        ),
-                        title: Text(
-                          _projectSummary.user!.fullName!,
-                          maxLines: 1,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: const Text("Check ib vs a"),
-                      ),
+                      ..._comments.map((e) => buildComment(e)).toList()
                     ]),
                     context),
               ]),
@@ -265,6 +291,35 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
               child: const Icon(Icons.add),
             ),
           );
+  }
+
+  ListTile buildComment(Comment cmt) {
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 30,
+        child: cmt.student!.avatarUrl == null
+            ? Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FittedBox(child: Text(cmt.student!.fullName!.substring(0, 1))),
+              )
+            : Image.network(
+                cmt.student!.avatarUrl!,
+                height: double.infinity,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+      ),
+      title: Text(
+        cmt.student!.fullName!,
+        maxLines: 1,
+        style: const TextStyle(
+          color: Colors.black,
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      subtitle: Text(cmt.content!),
+    );
   }
 
   void _launchURL(url) async {

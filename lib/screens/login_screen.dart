@@ -18,12 +18,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
+    SystemChrome.setSystemUIOverlayStyle(
+        SystemUiOverlayStyle.light.copyWith(statusBarColor: Colors.transparent));
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -32,13 +32,15 @@ class _LoginScreenState extends State<LoginScreen> {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter),
         ),
-        child: _isLoading ? const Center(child: CircularProgressIndicator()) : ListView(
-          children: <Widget>[
-            headerSection(),
-            textSection(),
-            buttonSection(),
-          ],
-        ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : ListView(
+                children: <Widget>[
+                  headerSection(),
+                  textSection(),
+                  buttonSection(),
+                ],
+              ),
       ),
     );
   }
@@ -47,46 +49,45 @@ class _LoginScreenState extends State<LoginScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     Map data = {
       'email': email,
-      'password': pass
+      'password': pass,
     };
     String jsonResponse;
-    http.Response response = await http.post("https://startup-competition-api.azurewebsites.net/api/v1/authentication",
+    http.Response response = await http.post(
+        "https://startup-competition-api.azurewebsites.net/api/v1/authentication",
         headers: {"Content-Type": "application/json"},
         body: json.encode(data));
-    
-    if(response.statusCode == 200) {
+
+    if (response.statusCode == 200) {
       jsonResponse = response.body;
       if (kDebugMode) {
-        print("token:"+jsonResponse);
+        print("token:" + jsonResponse);
       }
       setState(() {
         _isLoading = false;
       });
       sharedPreferences.setString("token", jsonResponse);
-      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (BuildContext context) => const TabsScreen(favoriteMeals: [])), (Route<dynamic> route) => false);
-    }
-    else {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => const TabsScreen()),
+          (Route<dynamic> route) => false);
+    } else {
       setState(() {
         _isLoading = false;
       });
       _showDialog(context);
     }
-
   }
 
-  _showDialog(BuildContext context)
-{
-  BlurryDialog  alert = const BlurryDialog("Login failed!","Please check your email and password again");
+  _showDialog(BuildContext context) {
+    BlurryDialog alert =
+        const BlurryDialog("Login failed!", "Please check your email and password again");
 
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return alert;
-    },
-  );
-}
-
-  
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
 
   Container buttonSection() {
     return Container(
@@ -95,12 +96,14 @@ class _LoginScreenState extends State<LoginScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       margin: const EdgeInsets.only(top: 15.0),
       child: ElevatedButton(
-        onPressed: emailController.text == "" || passwordController.text == "" ? null : () {
-          setState(() {
-            _isLoading = true;
-          });
-          signIn(emailController.text, passwordController.text);
-        },
+        onPressed: emailController.text == "" || passwordController.text == ""
+            ? null
+            : () {
+                setState(() {
+                  _isLoading = true;
+                });
+                signIn(emailController.text, passwordController.text);
+              },
         child: const Text("Sign In", style: TextStyle(color: Colors.white70)),
       ),
     );
@@ -117,7 +120,6 @@ class _LoginScreenState extends State<LoginScreen> {
           TextFormField(
             controller: emailController,
             cursorColor: Colors.white,
-
             style: const TextStyle(color: Colors.white70),
             decoration: const InputDecoration(
               icon: Icon(Icons.email, color: Colors.white70),
@@ -149,10 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
       margin: const EdgeInsets.only(top: 50.0),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
       child: const Text("Welcome to Team Matching",
-          style: TextStyle(
-              color: Colors.white70,
-              fontSize: 40.0,
-              fontWeight: FontWeight.bold)),
+          style: TextStyle(color: Colors.white70, fontSize: 40.0, fontWeight: FontWeight.bold)),
     );
   }
 }

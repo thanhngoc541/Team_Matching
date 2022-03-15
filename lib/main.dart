@@ -24,45 +24,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Meal> _meals = DUMMY_MEALS;
-  final List<Meal> _favoriteMeals = [];
   FilterObject _filterObject = FilterObject(
     status: "",
     filter: Filter(""),
   );
-  Map<String, bool> _filters = {
-    'gluten': false,
-    'lactose': false,
-    'vegetarian': false,
-    'vegan': false,
-  };
 
-  void _toggleFavorite(String mealdId) {
-    int index = _favoriteMeals.indexWhere((element) => element.id == mealdId);
-    if (index >= 0) {
-      setState(() => _favoriteMeals.removeAt(index));
-    } else {
-      setState(
-          () => _favoriteMeals.add(DUMMY_MEALS.firstWhere((element) => element.id == mealdId)));
-    }
-  }
-
-  bool _isMealFavorite(String mealId) => _favoriteMeals.any((element) => element.id == mealId);
-
-  void _setFilters(Map<String, bool> filterData) {
-    setState(() {
-      _filters = filterData;
-      _meals = DUMMY_MEALS.where((element) {
-        if (_filters['gluten']! && !element.isGlutenFree) return false;
-        if (_filters['lactose']! && !element.isLactoseFree) return false;
-        if (_filters['vegetarian']! && !element.isVegetarian) return false;
-        if (_filters['vegan']! && !element.isVegan) return false;
-        return true;
-      }).toList();
-    });
-  }
-
-  void _setFilters2(FilterObject filterData) {
+  void _setFilters(FilterObject filterData) {
     setState(() {
       _filterObject = filterData;
     });
@@ -94,15 +61,10 @@ class _MyAppState extends State<MyApp> {
       initialRoute: TabsScreen.routeName,
       routes: {
         LoginScreen.routeName: (ctx) => const LoginScreen(),
-        TabsScreen.routeName: (ctx) => TabsScreen(favoriteMeals: _favoriteMeals),
-        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(avalibleMeals: _meals),
-        MealDetailScreen.routeName: (ctx) =>
-            MealDetailScreen(isMealFavorite: _isMealFavorite, toggleFavorite: _toggleFavorite),
+        TabsScreen.routeName: (ctx) => TabsScreen(),
         ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
         FiltersScreen.routeName: (ctx) => FiltersScreen(
-              filters: _filters,
               saveFilters: _setFilters,
-              saveFilters2: _setFilters2,
               filterObject: _filterObject,
             )
       },

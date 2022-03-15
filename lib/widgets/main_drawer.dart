@@ -17,13 +17,13 @@ class MainDrawer extends StatelessWidget {
           alignment: Alignment.centerLeft,
           color: Theme.of(context).colorScheme.secondary,
           child: Text(
-            'Cooking Up!',
+            'Team Matching',
             style: TextStyle(
                 fontWeight: FontWeight.w900, fontSize: 30, color: Theme.of(context).primaryColor),
           ),
         ),
         const SizedBox(height: 20),
-        buildListTile(Icons.restaurant, 'Meals', () {
+        buildListTile(Icons.restaurant, 'Project', () {
           Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
         }),
         buildListTile(Icons.settings, 'Filters', () {

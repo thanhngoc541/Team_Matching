@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/screens/project_detail_screen.dart';
+// ignore: import_of_legacy_library_into_null_safe
+import 'package:http/http.dart' as http;
 
 class ProjectItem extends StatelessWidget {
   final ProjectSummary projectSummary;
@@ -8,6 +11,25 @@ class ProjectItem extends StatelessWidget {
     Key? key,
     required this.projectSummary,
   }) : super(key: key);
+
+  Future<void> applyProject(context, projectId) async {
+    if (projectId == null) return;
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString('token');
+    final response = await http.post(
+      'https://startup-competition-api.azurewebsites.net/api/v1/student-in-project?project-id=$projectId',
+      headers: {'Authorization': 'Bearer $token'},
+    );
+    if (response.statusCode == 201) {
+      popupMessage(context, "Ứng tuyển", "Ứng tuyển thành công");
+    }
+    if (response.statusCode == 400) {
+      popupMessage(context, "Ứng tuyển", "Bạn đã ứng tuyển vào dự án này");
+    } else {
+      // If that call was not successful, throw an error.
+      throw Exception('Failed to load project');
+    }
+  }
 
   void _selectProject(BuildContext ctx) {
     Navigator.of(ctx)
@@ -112,16 +134,38 @@ class ProjectItem extends StatelessWidget {
               subtitle: Text(projectSummary.user!.university!.name!, maxLines: 2),
               trailing: MediaQuery.of(context).size.width > 360
                   ? TextButton.icon(
-                      onPressed: () => {},
+                      onPressed: () => {applyProject(context, projectSummary.project?.id)},
                       icon: Icon(Icons.arrow_circle_right, color: Theme.of(context).errorColor),
                       label:
                           Text('Ứng tuyển', style: TextStyle(color: Theme.of(context).errorColor)),
                     )
-                  : ElevatedButton(child: const Text('Ứng tuyển'), onPressed: () => {}),
+                  : ElevatedButton(
+                      child: const Text('Ứng tuyển'),
+                      onPressed: () => {applyProject(context, projectSummary.project?.id)}),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Future<void> popupMessage(BuildContext context, String title, String message) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
     );
   }
 
