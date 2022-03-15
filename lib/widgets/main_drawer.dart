@@ -19,16 +19,18 @@ class MainDrawer extends StatelessWidget {
           child: Text(
             'Team Matching',
             style: TextStyle(
-                fontWeight: FontWeight.w900, fontSize: 30, color: Theme.of(context).primaryColor),
+                fontWeight: FontWeight.w900,
+                fontSize: 30,
+                color: Theme.of(context).primaryColor),
           ),
         ),
         const SizedBox(height: 20),
-        buildListTile(Icons.restaurant, 'Project', () {
+        buildListTile(Icons.restaurant, 'Profile', () {
           Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
         }),
-        buildListTile(Icons.settings, 'Filters', () {
-          Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
-        }),
+        buildListTile(Icons.restaurant, 'Project', () {
+          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
+        })
       ]),
     );
   }
@@ -39,7 +41,9 @@ class MainDrawer extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-            fontFamily: 'RobotoCondensed', fontSize: 20, fontWeight: FontWeight.bold),
+            fontFamily: 'RobotoCondensed',
+            fontSize: 20,
+            fontWeight: FontWeight.bold),
       ),
       onTap: () {
         tabHandler();
