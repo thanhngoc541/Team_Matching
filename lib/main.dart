@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:team_matching/models/filter.dart';
 import 'package:team_matching/screens/project_detail_screen.dart';
-import 'dummy_data.dart';
-import 'models/meal.dart';
 import 'screens/filters_screen.dart';
-import 'screens/meal_detail_screen.dart';
 import 'screens/categories_screen.dart';
 
-import 'screens/category_meals_screen.dart';
 import 'screens/tabs_screen.dart';
 
 import 'screens/login_screen.dart';
@@ -58,10 +54,10 @@ class _MyAppState extends State<MyApp> {
                   fontSize: 20, fontFamily: 'RobotoCondensed', fontWeight: FontWeight.bold),
             ),
       ),
-      initialRoute: TabsScreen.routeName,
+      initialRoute: LoginScreen.routeName,
       routes: {
         LoginScreen.routeName: (ctx) => const LoginScreen(),
-        TabsScreen.routeName: (ctx) => TabsScreen(),
+        TabsScreen.routeName: (ctx) => const TabsScreen(),
         ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
         FiltersScreen.routeName: (ctx) => FiltersScreen(
               saveFilters: _setFilters,

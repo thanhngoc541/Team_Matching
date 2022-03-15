@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/screens/projects_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
 import 'package:team_matching/widgets/main_drawer.dart';
-import '../models/meal.dart';
 
 class TabsScreen extends StatefulWidget {
   static const routeName = '/';
