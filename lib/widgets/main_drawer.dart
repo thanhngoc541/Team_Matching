@@ -26,7 +26,7 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        buildListTile(Icons.restaurant, 'Profile', () {  
+        buildListTile(Icons.account_box, 'Profile', () {  
           Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
         }),
         buildListTile(Icons.restaurant, 'Project', () {

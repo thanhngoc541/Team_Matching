@@ -19,7 +19,7 @@ class ProfileWidget extends StatelessWidget {
     final color = Theme.of(context).colorScheme.primary;
 
     return Center(
-      child: Stack(
+      child: Column(
         children: [
           buildImage(),
           Positioned(
@@ -35,8 +35,7 @@ class ProfileWidget extends StatelessWidget {
   Widget buildImage() {
     final image = NetworkImage(imagePath);
 
-    return Scaffold(
-      body: ClipOval(
+    return ClipOval(
       child: Material(
         color: Colors.transparent,
         child: Ink.image(
@@ -47,8 +46,8 @@ class ProfileWidget extends StatelessWidget {
           child: InkWell(onTap: onClicked),
           ),
         ),
-      )
-    );
+      );
+    
   }
 
   Widget buildEditIcon(Color color) => buildCircle(
