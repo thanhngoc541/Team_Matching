@@ -20,17 +20,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FilterObject _filterObject = FilterObject(
-    status: "",
-    filter: Filter(""),
-  );
-
-  void _setFilters(FilterObject filterData) {
-    setState(() {
-      _filterObject = filterData;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,10 +48,7 @@ class _MyAppState extends State<MyApp> {
         LoginScreen.routeName: (ctx) => const LoginScreen(),
         TabsScreen.routeName: (ctx) => const TabsScreen(),
         ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
-        FiltersScreen.routeName: (ctx) => FiltersScreen(
-              saveFilters: _setFilters,
-              filterObject: _filterObject,
-            )
+        FiltersScreen.routeName: (ctx) => const FiltersScreen()
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (context) => const CategoriesScreen());

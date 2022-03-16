@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/university.dart';
@@ -20,20 +21,37 @@ class ProjectsScreen extends StatefulWidget {
 class _ProjectsScreenState extends State<ProjectsScreen> {
   List<ProjectSummary> _list = [];
   bool _isLoading = true;
+  int _pageIndex = 0;
+  bool _isLastPage = false;
   @override
   void initState() {
     super.initState();
     fetchProject().then((value) => setState(() {
-          _list = value;
+          _list = [..._list, ...value];
           _isLoading = false;
         }));
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    print('did');
+  }
+
   Future<List<ProjectSummary>> fetchProject() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? token = sharedPreferences.getString('status');
+    Map data = {
+      'searchString': "",
+      'status': null,
+      'pageSize': 5,
+      'pageIndex': _pageIndex,
+      'filter': {'field': ""}
+    };
     final response = await http.post(
         'https://startup-competition-api.azurewebsites.net/api/v1/projects',
         headers: {'Content-Type': 'application/json', 'accept': 'application/json'},
-        body: json.encode({}));
+        body: json.encode(data));
     List<ProjectSummary> res = [];
     if (response.statusCode == 200) {
       List<dynamic> values;
@@ -85,6 +103,15 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         : ListView.builder(
             itemBuilder: (ctx, index) {
               final projectSummary = _list[index];
+              if (index == _list.length - 1 && _isLastPage == false) {
+                _pageIndex++;
+                fetchProject().then((value) => setState(() {
+                      _list = [..._list, ...value];
+                      if (value.length < 5) {
+                        _isLastPage = true;
+                      }
+                    }));
+              }
               return ProjectItem(
                 projectSummary: projectSummary,
               );

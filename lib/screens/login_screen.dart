@@ -50,6 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Map data = {
       'email': email,
       'password': pass,
+      'rememberMe': true,
     };
     String jsonResponse;
     http.Response response = await http.post(

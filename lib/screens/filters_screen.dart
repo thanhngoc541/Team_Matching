@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/filter.dart';
 
 import '../widgets/main_drawer.dart';
 
 class FiltersScreen extends StatefulWidget {
   static const routeName = '/filters';
-  final Function saveFilters;
-  final FilterObject filterObject;
-  const FiltersScreen({Key? key, required this.filterObject, required this.saveFilters})
-      : super(key: key);
+  const FiltersScreen({Key? key}) : super(key: key);
 
   @override
   State<FiltersScreen> createState() => _FiltersScreenState();
@@ -17,7 +15,6 @@ class FiltersScreen extends StatefulWidget {
 class _FiltersScreenState extends State<FiltersScreen> {
   String fieldValue = 'Tài chính - ngân hàng';
   int statusIndex = 0;
-  late FilterObject _filterObject;
   static const fields = [
     "Tài chính - ngân hàng",
     "Khoa học - công nghệ",
@@ -47,18 +44,22 @@ class _FiltersScreenState extends State<FiltersScreen> {
       "description": "Ngừng tuyển",
     },
   ];
-  @override
-  void initState() {
-    _filterObject = widget.filterObject;
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
+    SharedPreferences sharedPreferences;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your filters'),
-        actions: <Widget>[IconButton(onPressed: () => {}, icon: const Icon(Icons.save))],
+        actions: <Widget>[
+          IconButton(
+              onPressed: () async => {
+                    sharedPreferences = await SharedPreferences.getInstance(),
+                    sharedPreferences.setString("status", statusIndex.toString()),
+                    sharedPreferences.setString("field", fieldValue),
+                  },
+              icon: const Icon(Icons.save))
+        ],
       ),
       drawer: const MainDrawer(),
       body: Column(children: <Widget>[

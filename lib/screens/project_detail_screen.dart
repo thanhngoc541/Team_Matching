@@ -23,7 +23,10 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
   late TextEditingController _controller;
   late ProjectSummary _projectSummary = const ProjectSummary();
   late List<Comment> _comments = [];
+  int _pageIndex = 0;
+  bool _isLastPage = false;
   bool _isLoading = true;
+  bool _isLoadingComments = true;
   @override
   void didChangeDependencies() {
     _controller = TextEditingController();
@@ -37,7 +40,8 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
           });
       fetchProjectComments(projectId).then((value) => {
             setState(() {
-              _comments = value;
+              _comments = [..._comments, ...value];
+              _isLoadingComments = false;
             })
           });
     }
@@ -80,7 +84,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
 
   Future<List<Comment>> fetchProjectComments(projectId) async {
     final response = await http.get(
-      'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=1&page-size=100',
+      'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=$_pageIndex&page-size=10',
     );
     List<Comment> res = [];
     if (response.statusCode == 200) {
@@ -237,7 +241,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                                   ))
                               .toList()
                         ],
-                      )
+                      ),
                     ]),
                     context),
                 const Divider(
@@ -281,6 +285,25 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                               _controller.clear();
                             }),
                       ),
+                      // _isLoadingComments == true
+                      //     ? const Center(child: Text('Loading comments...'))
+                      //     : ListView.builder(
+                      //         itemBuilder: (ctx, index) {
+                      //           final cmt = _comments[index];
+                      //           // if (index == _comments.length - 1 && _isLastPage == false) {
+                      //           //   _pageIndex++;
+                      //           //   fetchProjectComments(_projectSummary.project?.id)
+                      //           //       .then((value) => setState(() {
+                      //           //             _comments = [..._comments, ...value];
+                      //           //             if (value.length < 5) {
+                      //           //               _isLastPage = true;
+                      //           //             }
+                      //           //           }));
+                      //           // }
+                      //           return buildComment(cmt);
+                      //         },
+                      //         itemCount: _comments.length,
+                      //       ),
                       ..._comments.map((e) => buildComment(e)).toList()
                     ]),
                     context),
