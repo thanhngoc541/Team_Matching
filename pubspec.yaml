@@ -36,6 +36,7 @@ dependencies:
     url_launcher: ^6.0.20
     shared_preferences: ^2.0.13
     http: ^0.12.1
+    animated_theme_switcher: ^2.0.6
 
 dev_dependencies:
     flutter_test:

@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/screens/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:team_matching/screens/login_screen.dart';
 import 'package:team_matching/screens/tabs_screen.dart';
 
 import '../screens/filters_screen.dart';
@@ -19,15 +22,26 @@ class MainDrawer extends StatelessWidget {
           child: Text(
             'Team Matching',
             style: TextStyle(
-                fontWeight: FontWeight.w900, fontSize: 30, color: Theme.of(context).primaryColor),
+                fontWeight: FontWeight.w900,
+                fontSize: 30,
+                color: Theme.of(context).primaryColor),
           ),
         ),
         const SizedBox(height: 20),
+        buildListTile(Icons.account_box, 'Profile', () {  
+          Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
+        }),
         buildListTile(Icons.restaurant, 'Project', () {
-          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
+          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);  
         }),
         buildListTile(Icons.settings, 'Filters', () {
           Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
+        }),
+        buildListTile(Icons.logout, 'Logout', () async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          //get token from shared preferences
+          sharedPreferences.remove('token');
+          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
         }),
       ]),
     );
@@ -39,7 +53,9 @@ class MainDrawer extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-            fontFamily: 'RobotoCondensed', fontSize: 20, fontWeight: FontWeight.bold),
+            fontFamily: 'RobotoCondensed',
+            fontSize: 20,
+            fontWeight: FontWeight.bold),
       ),
       onTap: () {
         tabHandler();
