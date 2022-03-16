@@ -1,11 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:animated_theme_switcher/animated_theme_switcher.dart';
 import 'package:team_matching/models/user.dart';
 import 'package:team_matching/utils/user_preferences.dart';
 import 'package:team_matching/widgets/profile_widget.dart';
 import 'package:team_matching/widgets/textfield_widget.dart';
+
 class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({Key? key}) : super(key: key);
+
   @override
   _EditProfilePageState createState() => _EditProfilePageState();
 }
@@ -18,8 +20,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
         child: Builder(
           builder: (context) => Scaffold(
             body: ListView(
-              padding: EdgeInsets.symmetric(horizontal: 32),
-              physics: BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              physics: const BouncingScrollPhysics(),
               children: [
                 ProfileWidget(
                   imagePath: user.avatarUrl.toString(),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:team_matching/models/filter.dart';
 
 import '../widgets/main_drawer.dart';
 
