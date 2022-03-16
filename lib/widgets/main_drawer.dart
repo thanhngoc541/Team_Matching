@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:team_matching/screens/profile_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:team_matching/screens/login_screen.dart';
 import 'package:team_matching/screens/tabs_screen.dart';
 
 import '../screens/filters_screen.dart';
@@ -34,6 +36,12 @@ class MainDrawer extends StatelessWidget {
         }),
         buildListTile(Icons.settings, 'Filters', () {
           Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
+        }),
+        buildListTile(Icons.logout, 'Logout', () async {
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          //get token from shared preferences
+          sharedPreferences.remove('token');
+          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
         }),
       ]),
     );
