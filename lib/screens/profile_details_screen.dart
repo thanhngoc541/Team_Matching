@@ -2,12 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:team_matching/models/university.dart';
 import 'package:team_matching/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:team_matching/screens/edit_profile_screen.dart';
+import 'package:team_matching/screens/profile_edit_screen.dart';
 import 'package:team_matching/screens/projects_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
-import 'package:team_matching/utils/user_preferences.dart';
 import 'package:team_matching/widgets/button_widget.dart';
-import 'package:team_matching/widgets/numbers_widget.dart';
 import 'package:team_matching/widgets/profile_widget.dart';
 import '../models/user.dart';
 import 'package:http/http.dart' as http;
@@ -144,7 +142,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               imagePath: "https://cdn3.iconfinder.com/data/icons/avatars-round-flat/33/avat-01-512.png",
               onClicked: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => EditProfilePage()),
+                  MaterialPageRoute(builder: (context) => ProfileEditScreen()),
                 );
               },
             ),

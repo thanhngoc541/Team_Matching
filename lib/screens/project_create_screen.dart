@@ -7,7 +7,7 @@ import '../widgets/main_drawer.dart';
 import 'dart:convert';
 
 class CreateProjectScreen extends StatefulWidget {
-  static const routeName = '/projects';
+  static const routeName = '/projects/create';
   const CreateProjectScreen({Key? key}) : super(key: key);
 
   @override

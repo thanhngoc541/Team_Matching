@@ -7,15 +7,15 @@ import 'package:http/http.dart' as http;
 import '../widgets/main_drawer.dart';
 import 'dart:convert';
 
-class ProfileScreen extends StatefulWidget {
-  static const routeName = '/projects';
-  const ProfileScreen({Key? key}) : super(key: key);
+class ProfileEditScreen extends StatefulWidget {
+  static const routeName = '/profile/edit';
+  const ProfileEditScreen({Key? key}) : super(key: key);
 
   @override
-  State<ProfileScreen> createState() => _CreateProjectScreenState();
+  State<ProfileEditScreen> createState() => _CreateProjectScreenState();
 }
 
-class _CreateProjectScreenState extends State<ProfileScreen> {
+class _CreateProjectScreenState extends State<ProfileEditScreen> {
   late TextEditingController _controller;
   // Initial Selected Value
   String genderDropdownValue = 'Male';

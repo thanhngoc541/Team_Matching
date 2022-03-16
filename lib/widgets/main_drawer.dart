@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:team_matching/screens/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/screens/login_screen.dart';
+import 'package:team_matching/screens/project_create_screen.dart';
 import 'package:team_matching/screens/tabs_screen.dart';
 
 import '../screens/filters_screen.dart';
@@ -28,14 +29,17 @@ class MainDrawer extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 20),
-        buildListTile(Icons.account_box, 'Profile', () {  
-          Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
-        }),
-        buildListTile(Icons.restaurant, 'Project', () {
+        buildListTile(Icons.architecture, 'Project', () {
           Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);  
+        }),
+        buildListTile(Icons.add_box_outlined, 'Create project', () {
+          Navigator.of(context).pushReplacementNamed(CreateProjectScreen.routeName);  
         }),
         buildListTile(Icons.settings, 'Filters', () {
           Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
+        }),
+        buildListTile(Icons.account_box, 'Profile', () {  
+          Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
         }),
         buildListTile(Icons.logout, 'Logout', () async {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
