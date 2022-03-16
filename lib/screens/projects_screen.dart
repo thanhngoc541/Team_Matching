@@ -99,7 +99,7 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   @override
   Widget build(BuildContext context) {
     return _isLoading == true
-        ? const Center(child: Text('No project'))
+        ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
             itemBuilder: (ctx, index) {
               final projectSummary = _list[index];
