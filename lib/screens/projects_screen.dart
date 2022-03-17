@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/university.dart';
@@ -32,14 +33,18 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
   }
 
   Future<List<ProjectSummary>> fetchProject() async {
-    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // String? token = sharedPreferences.getString('token');
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String? status = sharedPreferences.getString('status');
+    String? field = sharedPreferences.getString('field');
+    String? searchString = sharedPreferences.getString('searchString');
     Map data = {
-      'searchString': "",
-      'status': null,
+      'searchString': searchString,
+      'status': status,
       'pageSize': 5,
       'pageIndex': _pageIndex,
-      'filter': {'field': ""}
+      'filter': {
+        'fields': [field ?? ""]
+      }
     };
     final response = await http.post(
         'https://startup-competition-api.azurewebsites.net/api/v1/projects',

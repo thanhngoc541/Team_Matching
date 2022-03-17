@@ -67,6 +67,9 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
       sharedPreferences.setString("token", jsonResponse);
+      sharedPreferences.remove("status");
+      sharedPreferences.remove("field");
+      sharedPreferences.remove("searchString");
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (BuildContext context) => const TabsScreen()),
           (Route<dynamic> route) => false);
