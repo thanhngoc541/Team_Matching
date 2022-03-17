@@ -231,7 +231,9 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         children: [
           ButtonWidget(
             text: 'Cancel',
-            onClicked: () {},
+            onClicked: () {
+              Navigator.of(context).pop();
+            },
           ),
           ButtonWidget(
             text: 'Create',

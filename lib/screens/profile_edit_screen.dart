@@ -92,7 +92,7 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
       'phonenumber': phoneNumberController.text,
       'email': emailController.text,
       'gender': genderDropdownValue,
-      'dob': dobController.text,
+      'dob': dobController.text.isEmpty ? null : dobController.text,
       'university': universityController.text,
       'department': departmentController.text,
       'major': majorController.text,
@@ -293,9 +293,8 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
         ]));
   }
 
-  Widget buttonActions() => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 80),
-      child: Row(
+  Widget buttonActions() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ButtonWidget(
             text: 'Cancel',
@@ -310,7 +309,7 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
             },
           )
         ],
-      ));
+      );
   Future<void> popupMessage(BuildContext context, String title, String message) async {
     await showDialog<void>(
       context: context,
