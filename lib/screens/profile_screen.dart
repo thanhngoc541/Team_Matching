@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:team_matching/screens/profile_application_screen.dart';
 import 'package:team_matching/screens/profile_details_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
-import '../models/user.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
 import '../widgets/main_drawer.dart';
-import 'dart:convert';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
@@ -19,9 +17,9 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController _controller;
 
- int _selectedTabIndex = 0;
- List<Map<String, dynamic>> _pages = [];
- String _titleAppbar = "Profile";
+  int _selectedTabIndex = 0;
+  List<Map<String, dynamic>> _pages = [];
+  String _titleAppbar = "Profile";
 
   @override
   void initState() {
@@ -36,14 +34,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _selectTab(index) {
     setState(() {
       _selectedTabIndex = index;
-      if(index == 0){
+      if (index == 0) {
         _titleAppbar = "Profile";
-      } else if(index == 1){
+      } else if (index == 1) {
         _titleAppbar = "My application";
-      } else if(index == 2){
+      } else if (index == 2) {
         _titleAppbar = "My team";
       }
-    }); 
+    });
   }
 
   @override
@@ -62,19 +60,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
         drawer: const Drawer(child: MainDrawer()),
         body: _pages[_selectedTabIndex]['page'] as Widget,
         bottomNavigationBar: BottomNavigationBar(
-        onTap: _selectTab,
-        backgroundColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.white,
-        selectedItemColor: Theme.of(context).colorScheme.secondary,
-        currentIndex: _selectedTabIndex,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.verified_user_sharp),label: 'Profile'),
-          BottomNavigationBarItem(icon: Icon(Icons.book), label: 'My application'),
-          BottomNavigationBarItem(icon: Icon(Icons.group), label: 'My team'),
-        ],
-      ),
+          onTap: _selectTab,
+          backgroundColor: Theme.of(context).primaryColor,
+          unselectedItemColor: Colors.white,
+          selectedItemColor: Theme.of(context).colorScheme.secondary,
+          currentIndex: _selectedTabIndex,
+          items: const [
+            BottomNavigationBarItem(icon: Icon(Icons.verified_user_sharp), label: 'Profile'),
+            BottomNavigationBarItem(icon: Icon(Icons.book), label: 'My application'),
+            BottomNavigationBarItem(icon: Icon(Icons.group), label: 'My team'),
+          ],
+        ),
       ),
     );
-
-}
+  }
 }

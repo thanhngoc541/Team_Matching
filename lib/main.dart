@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:team_matching/screens/profile_details_screen.dart';
+import 'package:team_matching/screens/profile_edit_screen.dart';
 import 'package:team_matching/screens/profile_screen.dart';
 import 'package:team_matching/screens/project_create_screen.dart';
 import 'package:team_matching/screens/project_detail_screen.dart';
@@ -51,7 +53,8 @@ class _MyAppState extends State<MyApp> {
         CreateProjectScreen.routeName: (ctx) => const CreateProjectScreen(),
         TabsScreen.routeName: (ctx) => const TabsScreen(),
         ProjectDetailScreen.routeName: (ctx) => const ProjectDetailScreen(),
-        FiltersScreen.routeName: (ctx) => const FiltersScreen()
+        FiltersScreen.routeName: (ctx) => const FiltersScreen(),
+        ProfileEditScreen.routeName: (ctx) => const ProfileEditScreen()
       },
       onUnknownRoute: (settings) {
         return MaterialPageRoute(builder: (context) => const CategoriesScreen());
