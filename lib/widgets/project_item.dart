@@ -24,7 +24,7 @@ class ProjectItem extends StatelessWidget {
       popupMessage(context, "Ứng tuyển", "Ứng tuyển thành công");
     }
     if (response.statusCode == 400) {
-      popupMessage(context, "Ứng tuyển", "Bạn đã ứng tuyển vào dự án này");
+      popupMessage(context, "Ứng tuyển", response.body);
     } else {
       // If that call was not successful, throw an error.
       throw Exception('Failed to load project');

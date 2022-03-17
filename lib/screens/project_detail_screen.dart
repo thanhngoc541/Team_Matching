@@ -7,6 +7,7 @@ import 'package:team_matching/models/comment.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/user.dart';
+import 'package:team_matching/screens/project_create_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
@@ -310,7 +311,9 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
               ]),
             ),
             floatingActionButton: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(CreateProjectScreen.routeName);
+              },
               child: const Icon(Icons.add),
             ),
           );

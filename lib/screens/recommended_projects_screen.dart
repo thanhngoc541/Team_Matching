@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:team_matching/dummy_data.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/university.dart';
@@ -61,7 +62,7 @@ class _RecommendedProjectsScreenState extends State<RecommendedProjectsScreen> {
                   title: item1['title'],
                 ),
                 user: item2 == null
-                    ? null
+                    ? DUMMY_PROJECTS[0].user
                     : User(
                         id: item2['id'],
                         avatarUrl: item2['avatarUrl'],

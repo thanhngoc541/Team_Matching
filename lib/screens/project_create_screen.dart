@@ -18,12 +18,19 @@ class CreateProjectScreen extends StatefulWidget {
 class _CreateProjectScreenState extends State<CreateProjectScreen> {
   late TextEditingController _controller;
   // Initial Selected Value
-  String fieldDropdownValue = 'Business';
+  String fieldDropdownValue = "Tài chính - ngân hàng";
   // List of items in our dropdown menu
-  var fieldItems = [
-    'Business',
-    'Marketing',
-    'Technology',
+
+  static const fieldItems = [
+    "Tài chính - ngân hàng",
+    "Khoa học - công nghệ",
+    "Nông nghiệp xanh",
+    "Công nghệ hoá-sinh",
+    "Dịch vụ",
+    "Du lịch",
+    "Giáo dục",
+    "Y tế",
+    "Công nghiẹp chế tạo, sản xuất",
   ];
   bool isLoading = true;
 
@@ -45,7 +52,7 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
     super.didChangeDependencies();
   }
 
-  Future<Project> createProject(Project project) async {
+  Future<void> createProject(Project project) async {
     Map data = {
       'title': project.title,
       'description': project.description,
@@ -53,33 +60,27 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
       'status': -1,
       'field': project.field,
       'contactLink': project.contactLink,
-      'application': project.application
+      'application': project.application,
+      "projectSkills": [
+        "Khoa học môi trường và thiên nhiên",
+        "Công nghệ sinh học và ứng dụng",
+        "Communication skills",
+        "Critical shinking"
+      ]
     };
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? token = sharedPreferences.getString('token');
     final response = await http.post(
-      'https://startup-competition-api.azurewebsites.net/api/v1/projects',
+      'https://startup-competition-api.azurewebsites.net/api/v1/projects/add',
       headers: {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'},
       body: json.encode(data),
     );
     // Project? prj;
-    if (response.statusCode == 200) {
-      dynamic value;
-      value = jsonDecode(response.body);
-      if (value != null) {
-        // prj = Project(
-        //   id: value['id'],
-        //   title: value['title'],
-        //   description: value['description'],
-        //   imageUrl: value['imageUrl'],
-        //   status: value['status'],
-        //   field: value['field'],
-        //   contactLink: value['contactLink'],
-        //   application: value['application'],
-        // );
-      }
-      return project;
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.of(context).pop();
+      popupMessage(context, "Project", "Tạo dự án thành công");
     } else {
+      popupMessage(context, "Project", "Tạo dự án thất bại");
       throw Exception('Failed to Create Project');
     }
   }
@@ -91,7 +92,6 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           appBar: AppBar(
             title: const Text("Project"),
           ),
-          drawer: const Drawer(child: MainDrawer()),
           body: Column(
             children: <Widget>[
               headerSection(),
@@ -227,9 +227,8 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
         ]));
   }
 
-  Widget buttonActions() => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 80),
-      child: Row(
+  Widget buttonActions() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           ButtonWidget(
             text: 'Cancel',
@@ -237,10 +236,20 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           ),
           ButtonWidget(
             text: 'Create',
-            onClicked: () {},
+            onClicked: () {
+              createProject(Project(
+                  id: -1,
+                  application: applicationDescriptionController.text,
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  field: fieldDropdownValue,
+                  imageUrl: imageUrlController.text,
+                  contactLink: contactLinkController.text));
+            },
           )
         ],
-      ));
+      );
+
   Widget headerSection() => Container(
         padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
@@ -250,4 +259,23 @@ class _CreateProjectScreenState extends State<CreateProjectScreen> {
           )
         ]),
       );
+  Future<void> popupMessage(BuildContext context, String title, String message) async {
+    await showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

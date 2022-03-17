@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:team_matching/screens/project_create_screen.dart';
 import 'package:team_matching/screens/projects_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
 import 'package:team_matching/widgets/main_drawer.dart';
@@ -38,33 +39,40 @@ class _TabsScreenState extends State<TabsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).pushNamed(CreateProjectScreen.routeName);
+        },
+        child: const Icon(Icons.add),
+      ),
       appBar: AppBar(
-        title: Container(
-            width: double.infinity,
-            height: 40,
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
-            child: Center(
-              child: TextField(
-                onSubmitted: (value) async {
-                  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                  sharedPreferences.setString('searchString', value);
-                  setState(() {
-                    _controller = TextEditingController();
-                  });
-                },
-                controller: _controller,
-                decoration: InputDecoration(
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: IconButton(
-                      icon: const Icon(Icons.clear),
-                      onPressed: () {
-                        _controller.clear();
-                      },
-                    ),
-                    hintText: 'Search...',
-                    border: InputBorder.none),
-              ),
-            )),
+        title: const Text('Projects'),
+        // Container(
+        //     width: double.infinity,
+        //     height: 40,
+        //     decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(5)),
+        //     child: Center(
+        //       child: TextField(
+        //         onSubmitted: (value) async {
+        //           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        //           sharedPreferences.setString('searchString', value);
+        //           setState(() {
+        //             _controller = TextEditingController();
+        //           });
+        //         },
+        //         controller: _controller,
+        //         decoration: InputDecoration(
+        //             prefixIcon: const Icon(Icons.search),
+        //             suffixIcon: IconButton(
+        //               icon: const Icon(Icons.clear),
+        //               onPressed: () {
+        //                 _controller.clear();
+        //               },
+        //             ),
+        //             hintText: 'Search...',
+        //             border: InputBorder.none),
+        //       ),
+        //     )),
       ),
       drawer: const Drawer(child: MainDrawer()),
       body: _pages[_selectedTabIndex]['page'] as Widget,

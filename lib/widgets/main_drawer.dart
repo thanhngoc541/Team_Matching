@@ -23,22 +23,20 @@ class MainDrawer extends StatelessWidget {
           child: Text(
             'Team Matching',
             style: TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 30,
-                color: Theme.of(context).primaryColor),
+                fontWeight: FontWeight.w900, fontSize: 30, color: Theme.of(context).primaryColor),
           ),
         ),
         const SizedBox(height: 20),
         buildListTile(Icons.architecture, 'Project', () {
-          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);  
+          Navigator.of(context).pushReplacementNamed(TabsScreen.routeName);
         }),
-        buildListTile(Icons.add_box_outlined, 'Create project', () {
-          Navigator.of(context).pushReplacementNamed(CreateProjectScreen.routeName);  
-        }),
-        buildListTile(Icons.settings, 'Filters', () {
+        // buildListTile(Icons.add_box_outlined, 'Create project', () {
+        //   Navigator.of(context).pushReplacementNamed(CreateProjectScreen.routeName);
+        // }),
+        buildListTile(Icons.settings, 'Search', () {
           Navigator.of(context).pushReplacementNamed(FiltersScreen.routeName);
         }),
-        buildListTile(Icons.account_box, 'Profile', () {  
+        buildListTile(Icons.account_box, 'Profile', () {
           Navigator.of(context).pushReplacementNamed(ProfileScreen.routeName);
         }),
         buildListTile(Icons.logout, 'Logout', () async {
@@ -57,9 +55,7 @@ class MainDrawer extends StatelessWidget {
       title: Text(
         title,
         style: const TextStyle(
-            fontFamily: 'RobotoCondensed',
-            fontSize: 20,
-            fontWeight: FontWeight.bold),
+            fontFamily: 'RobotoCondensed', fontSize: 20, fontWeight: FontWeight.bold),
       ),
       onTap: () {
         tabHandler();

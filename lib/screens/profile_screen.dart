@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:team_matching/screens/profile_application_screen.dart';
 import 'package:team_matching/screens/profile_details_screen.dart';
+import 'package:team_matching/screens/project_create_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
 import '../widgets/main_drawer.dart';
 
@@ -52,6 +53,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Builder(
       builder: (context) => Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.of(context).pushNamed(CreateProjectScreen.routeName);
+          },
+          child: const Icon(Icons.add),
+        ),
         appBar: AppBar(
           title: Text(_titleAppbar),
         ),

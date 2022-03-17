@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:team_matching/dummy_data.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/university.dart';
@@ -29,6 +30,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
     fetchProject().then((value) => setState(() {
           _list = [..._list, ...value];
           _isLoading = false;
+          if (value.length < 5) {
+            _isLastPage = true;
+          }
         }));
   }
 
@@ -63,25 +67,25 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
             ProjectSummary project = ProjectSummary(
                 project: Project(
                   id: item1['id'],
-                  application: item1['application'],
+                  application: item1['application'] ?? "",
                   competitionId: item1['competitionId'],
-                  contactLink: item1['contactLink'],
-                  description: item1['description'],
-                  field: item1['field'],
-                  imageUrl: item1['imageUrl'],
-                  projectSkills: item1['projectSkills'],
+                  contactLink: item1['contactLink'] ?? "",
+                  description: item1['description'] ?? "",
+                  field: item1['field'] ?? "",
+                  imageUrl: item1['imageUrl'] ?? "",
+                  projectSkills: item1['projectSkills'] ?? [],
                   status: item1['status'],
                   title: item1['title'],
                 ),
                 user: item2 == null
-                    ? null
+                    ? DUMMY_PROJECTS[0].user
                     : User(
                         id: item2['id'],
                         avatarUrl: item2['avatarUrl'],
                         fullName: item2['fullName'] ?? "",
                         university: University(
-                            id: item2['university']['id'],
-                            name: item2['university']['name'] ?? "")));
+                            id: item2['university']?['id'] ?? "",
+                            name: item2['university']?['name'] ?? "")));
             res.add(project);
             // ProjectSummary ps = ProjectSummary(project: map['item1'], user: map['item2']);
           }
