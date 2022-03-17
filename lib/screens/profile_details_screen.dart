@@ -62,12 +62,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
           doB: value['student']['doB'],
           email: value['student']['email'],
           university: University(
-              id: value['student']['university']["id"],
-              name: value['student']['university']["name"]),
-          major: value['student']['major']["name"],
+              id: value['student']['university']?["id"],
+              name: value['student']['university']?["name"]),
+          major: value['student']['major']?["name"],
           fblink: value['student']['fblink'],
           year: value['student']['year'],
-          department: value['student']['department']['name'],
+          department: value['student']?['department']?['name'],
         );
       }
       return user;
