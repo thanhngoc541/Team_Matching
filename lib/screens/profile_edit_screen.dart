@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:team_matching/models/project.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/user.dart';
 import 'package:team_matching/widgets/button_widget.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-import '../widgets/main_drawer.dart';
 import 'dart:convert';
 
 class ProfileEditScreen extends StatefulWidget {
@@ -69,6 +68,7 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
     yearController = TextEditingController();
     linkFacebookController = TextEditingController();
     User _user = ModalRoute.of(context)!.settings.arguments as User;
+    // ignore: unnecessary_null_comparison
     if (_user != null) {
       userId = _user.id;
       fullNameController.text = _user.fullName!;
@@ -86,7 +86,6 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
   }
 
   Future<void> updateProfile() async {
-    print(yearController.text);
     Map data = {
       'id': userId,
       'fullname': fullNameController.text,
@@ -295,7 +294,7 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
   }
 
   Widget buttonActions() => Container(
-      padding: EdgeInsets.symmetric(horizontal: 80),
+      padding: const EdgeInsets.symmetric(horizontal: 80),
       child: Row(
         children: [
           ButtonWidget(
@@ -333,7 +332,7 @@ class _CreateProjectScreenState extends State<ProfileEditScreen> {
   }
 
   Widget headerSection() => Container(
-        padding: EdgeInsets.symmetric(horizontal: 48),
+        padding: const EdgeInsets.symmetric(horizontal: 48),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: const [
           Text(
             'Edit Profile',

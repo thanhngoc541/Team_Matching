@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/models/project.dart';
 import 'package:team_matching/models/project_summary.dart';
 import 'package:team_matching/models/university.dart';
@@ -32,15 +31,9 @@ class _ProjectsScreenState extends State<ProjectsScreen> {
         }));
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('did');
-  }
-
   Future<List<ProjectSummary>> fetchProject() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? token = sharedPreferences.getString('status');
+    // SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // String? token = sharedPreferences.getString('token');
     Map data = {
       'searchString': "",
       'status': null,

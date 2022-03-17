@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:team_matching/screens/profile_details_screen.dart';
 import 'package:team_matching/screens/profile_edit_screen.dart';
 import 'package:team_matching/screens/profile_screen.dart';
 import 'package:team_matching/screens/project_create_screen.dart';

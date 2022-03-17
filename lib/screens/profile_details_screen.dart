@@ -3,13 +3,11 @@ import 'package:team_matching/models/university.dart';
 import 'package:team_matching/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/screens/profile_edit_screen.dart';
-import 'package:team_matching/screens/projects_screen.dart';
-import 'package:team_matching/screens/recommended_projects_screen.dart';
 import 'package:team_matching/widgets/button_widget.dart';
 import 'package:team_matching/widgets/profile_widget.dart';
 import '../models/user.dart';
+// ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-import '../widgets/main_drawer.dart';
 import 'dart:convert';
 
 class ProfileDetailScreen extends StatefulWidget {
@@ -22,7 +20,7 @@ class ProfileDetailScreen extends StatefulWidget {
 
 class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   late TextEditingController _controller;
-  late User user = new User(id: -1);
+  late User user = const User(id: -1);
   bool _isLoading = true;
 
   @override

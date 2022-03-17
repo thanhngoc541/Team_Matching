@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 class ProfileWidget extends StatelessWidget {
@@ -16,8 +14,6 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
-
     return Center(
       child: Column(
         children: [
@@ -39,12 +35,10 @@ class ProfileWidget extends StatelessWidget {
           width: 128,
           height: 128,
           child: InkWell(onTap: onClicked),
-          ),
         ),
-      );
-    
+      ),
+    );
   }
-
 
   Widget buildCircle({
     required Widget child,

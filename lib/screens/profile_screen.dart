@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:team_matching/screens/profile_application_screen.dart';
 import 'package:team_matching/screens/profile_details_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
-// ignore: import_of_legacy_library_into_null_safe
-import 'package:http/http.dart' as http;
 import '../widgets/main_drawer.dart';
 
 class ProfileScreen extends StatefulWidget {

@@ -84,7 +84,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
 
   Future<List<Comment>> fetchProjectComments(projectId) async {
     final response = await http.get(
-      'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=$_pageIndex&page-size=10',
+      'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=$_pageIndex&page-size=100',
     );
     List<Comment> res = [];
     if (response.statusCode == 200) {
