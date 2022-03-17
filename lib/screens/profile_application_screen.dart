@@ -46,7 +46,6 @@ class _ProfileApplicationState extends State<ProfileApplication> {
           if (values[i] != null) {
             Map<String, dynamic> map = values[i];
             dynamic item1 = map['project'];
-            print(item1['id']);
             ProjectSummary project = ProjectSummary(
               project: Project(
                 id: item1['id'],

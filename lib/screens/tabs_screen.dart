@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/screens/project_create_screen.dart';
 import 'package:team_matching/screens/projects_screen.dart';
 import 'package:team_matching/screens/recommended_projects_screen.dart';
@@ -14,7 +13,6 @@ class TabsScreen extends StatefulWidget {
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  late TextEditingController _controller;
   List<Map<String, dynamic>> _pages = [];
   int _selectedTabIndex = 0;
 
@@ -26,7 +24,6 @@ class _TabsScreenState extends State<TabsScreen> {
       {'page': const RecommendedProjectsScreen(), 'title': 'Recommended'},
       // {'page': FavoritiesScreen(favoriteMeals: widget.favoriteMeals), 'title': 'Your favorite'},
     ];
-    _controller = TextEditingController();
     super.initState();
   }
 

@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:team_matching/widgets/button_widget.dart';
 // ignore: import_of_legacy_library_into_null_safe
 import 'package:http/http.dart' as http;
-import '../widgets/main_drawer.dart';
 import 'dart:convert';
 
 class CreateProjectScreen extends StatefulWidget {

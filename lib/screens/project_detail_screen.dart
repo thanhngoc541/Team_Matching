@@ -24,10 +24,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
   late TextEditingController _controller;
   late ProjectSummary _projectSummary = const ProjectSummary();
   late List<Comment> _comments = [];
-  int _pageIndex = 0;
-  bool _isLastPage = false;
   bool _isLoading = true;
-  bool _isLoadingComments = true;
   @override
   void didChangeDependencies() {
     _controller = TextEditingController();
@@ -42,7 +39,6 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
       fetchProjectComments(projectId).then((value) => {
             setState(() {
               _comments = [..._comments, ...value];
-              _isLoadingComments = false;
             })
           });
     }
@@ -85,7 +81,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
 
   Future<List<Comment>> fetchProjectComments(projectId) async {
     final response = await http.get(
-      'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=$_pageIndex&page-size=100',
+      'https://startup-competition-api.azurewebsites.net/api/v1/projects/$projectId/comments?page=0&page-size=100',
     );
     List<Comment> res = [];
     if (response.statusCode == 200) {

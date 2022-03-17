@@ -12,7 +12,7 @@ class FiltersScreen extends StatefulWidget {
 }
 
 class _FiltersScreenState extends State<FiltersScreen> {
-  late TextEditingController _searchStringController = TextEditingController();
+  final TextEditingController _searchStringController = TextEditingController();
 
   String fieldValue = 'Tài chính - ngân hàng';
   int statusIndex = 0;
