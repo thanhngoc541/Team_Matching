@@ -7,3 +7,4 @@ class ProjectSummary {
 
   const ProjectSummary({this.project, this.user});
 }
+

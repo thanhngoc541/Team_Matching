@@ -33,8 +33,8 @@ const DUMMY_PROJECTS = [
         status: -1),
     user: User(
       id: 197,
-      fullName: "Trần Văn Tiến",
-      university: University(id: 40, name: "TRƯỜNG ĐẠI HỌC KINH TẾ - LUẬT"),
+      fullName: "Trần2 Văn Tiến",
+      university: University(id: 40, name: "TRƯỜNG ĐẠI HỌC KINH TẾ - LU2ẬT"),
     ),
   ),
   ProjectSummary(
